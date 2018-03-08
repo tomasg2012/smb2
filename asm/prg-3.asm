@@ -2632,10 +2632,20 @@ loc_BANK3_AD85:
       ASL     ObjectXAccel,X
 
 loc_BANK3_ADAB:
+
+IFDEF _REV_A_
+      LDA PlayerState
+      CMP #PlayerState_ChangingSize
+      BEQ +
+ENDIF
+
       JSR     sub_BANK2_9E50
 
       JMP     HandleObjectGravity
 
+IFDEF _REV_A_
+    + RTS
+ENDIF
 ; ---------------------------------------------------------------------------
 
 EnemyBehavior_Autobomb:
@@ -3765,8 +3775,13 @@ loc_BANK3_B398:
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $100
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $110
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $120
-      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $130
-      .BYTE $FF, $FF, $FF, $FF,	$FF		  ; $140
+      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF
+
+IFNDEF _REV_A_
+      .BYTE $FF, $FF, $FF, $FF, $FF, $FF, $FF
+ENDIF
+
+
 unk_BANK3_B4E0:.BYTE $F0
       .BYTE $10
 
@@ -5827,8 +5842,9 @@ _empty_7EB0:.BYTE $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;	$120
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;	$12C
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;	$138
-      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF;	$144
+      .BYTE $FF, $FF, $FF, $FF,	$FF
+      .BYTE $FF, $FF, $FF, $FF, $FF, $FF, $FF
+
 ; end of 'BANK3'
 
 ; ===========================================================================
-

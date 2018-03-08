@@ -21,14 +21,14 @@
       .BYTE 0
 WorldStartingLevel:.BYTE 0
 
-WorldPlus1StartingLevel:.BYTE 3					    
+WorldPlus1StartingLevel:.BYTE 3
       .BYTE 6					  ; 1
       .BYTE 9					  ; 2
       .BYTE $C					  ; 3
       .BYTE $F					  ; 4
       .BYTE $12					  ; 5
       .BYTE $14					  ; 6
-PlayerSelectMarioSprites1:.BYTE	$8F ; 
+PlayerSelectMarioSprites1:.BYTE	$8F ; ï¿½
 
       .BYTE   0
       .BYTE   0
@@ -45,7 +45,7 @@ PlayerSelectMarioSprites1:.BYTE	$8F ; 
       .BYTE   2
       .BYTE $40
       .BYTE $50
-PlayerSelectLuigiSprites1:.BYTE	$8F ; 
+PlayerSelectLuigiSprites1:.BYTE	$8F ; ï¿½
       .BYTE   4
       .BYTE   1
       .BYTE $68
@@ -93,7 +93,7 @@ PlayerSelectPrincessSprites1:.BYTE $8F
       .BYTE  $E
       .BYTE $43
       .BYTE $B0
-PlayerSelectMarioSprites2:.BYTE	$8F ; 
+PlayerSelectMarioSprites2:.BYTE	$8F ; ï¿½
 
       .BYTE $10
       .BYTE   0
@@ -110,7 +110,7 @@ PlayerSelectMarioSprites2:.BYTE	$8F ; 
       .BYTE $16
       .BYTE   0
       .BYTE $50
-PlayerSelectLuigiSprites2:.BYTE	$8F ; 
+PlayerSelectLuigiSprites2:.BYTE	$8F ; ï¿½
       .BYTE $18
       .BYTE   1
       .BYTE $68
@@ -158,7 +158,7 @@ PlayerSelectPrincessSprites2:.BYTE $8F
       .BYTE $2E
       .BYTE   3
       .BYTE $B0
-PlayerSelectSpriteIndexes:.BYTE	0, $30,	$20, $10		      
+PlayerSelectSpriteIndexes:.BYTE	0, $30,	$20, $10
 BonusChanceCherrySprite:.BYTE $5F
       .BYTE   5
       .BYTE   1
@@ -234,7 +234,7 @@ unk_BANKF_E0D5:.BYTE $3F
       .BYTE   4
       .BYTE  $F
       .BYTE $27
-      .BYTE $30	
+      .BYTE $30
       .BYTE   1
       .BYTE $3F
       .BYTE $1C
@@ -248,7 +248,7 @@ TitleCardPalettes:.BYTE	$3F ; ?
       .BYTE   0
       .BYTE $20
       .BYTE $38	; 8
-      .BYTE $30	
+      .BYTE $30
       .BYTE $1A
       .BYTE  $F
       .BYTE $38	; 8
@@ -264,7 +264,7 @@ TitleCardPalettes:.BYTE	$3F ; ?
       .BYTE $18
       .BYTE   8
       .BYTE $38	; 8
-      .BYTE $30	
+      .BYTE $30
       .BYTE $27
       .BYTE   1
       .BYTE $38	; 8
@@ -319,8 +319,8 @@ JumpToTableAfterJump:
 
 ; ---------------------------------------------------------------------------
 BlackAndWhitePalette:.BYTE  $F
-      .BYTE $30	
-      .BYTE $30	
+      .BYTE $30
+      .BYTE $30
       .BYTE  $F
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -1447,6 +1447,11 @@ EndOfLevelSlotMachine:
       JSR     WaitForNMI_TurnOffPPU
 
       JSR     ClearNametables
+
+IFDEF _REV_A_
+      JSR     EnableNMI
+      JSR     WaitForNMI
+ENDIF
 
       JSR     LoadBonusChanceCHRBanks
 
@@ -2672,8 +2677,11 @@ _unused_BANKF_ED4D:.BYTE $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $270
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $280
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $290
-      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $2A0
-      .BYTE $FF, $FF, $FF			  ; $2B0
+      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF
+IFNDEF _REV_A_
+      .BYTE $FF, $FF, $FF,$FF, $FF, $FF
+ENDIF
+
 ; [000002B3 BYTES: END OF AREA UNUSED-BANKF:ED4D. PRESS	KEYPAD "-" TO COLLAPSE]
 byte_BANKF_F000:.BYTE 0
 
@@ -2823,7 +2831,7 @@ byte_BANKF_F055:.BYTE 7
       .BYTE 8
       .BYTE 8
       .BYTE   3
-      .BYTE $30	
+      .BYTE $30
       .BYTE $18
       .BYTE $18
       .BYTE $FF
@@ -2931,7 +2939,7 @@ locret_BANKF_F0F3:
 ; End of function sub_BANKF_F0E9
 
 ; ---------------------------------------------------------------------------
-LevelMusicIndexes:.BYTE	Music1_Overworld		      
+LevelMusicIndexes:.BYTE	Music1_Overworld
       .BYTE Music1_Inside			  ; 1 ;	Music1 indexes.
       .BYTE Music1_Boss				  ; 2
       .BYTE Music1_Wart				  ; 3
@@ -3714,7 +3722,7 @@ byte_BANKF_F4DA:.BYTE $C0
       .BYTE $40
       .BYTE $B0
       .BYTE $60
-ObjectAttributeTable:.BYTE ObjAttrib_Palette1			 
+ObjectAttributeTable:.BYTE ObjAttrib_Palette1
       .BYTE ObjAttrib_Palette1			  ; 1
       .BYTE ObjAttrib_Palette1			  ; 2
       .BYTE ObjAttrib_Palette3			  ; 3
@@ -4398,7 +4406,7 @@ TileQuadPointersHi:.BYTE >TileQuads1
       .BYTE >TileQuads2
       .BYTE >TileQuads3
       .BYTE >TileQuads4
-TileQuads1:.BYTE $FE,$FE,$FE,$FE		       
+TileQuads1:.BYTE $FE,$FE,$FE,$FE
       .BYTE $B4,$B6,$B5,$B7			  ; 4
       .BYTE $B8,$FA,$B9,$FA			  ; 8
       .BYTE $FA,$FA,$B2,$B3			  ; $C
@@ -4433,7 +4441,7 @@ TileQuads1:.BYTE $FE,$FE,$FE,$FE
       .BYTE $32,$34,$33,$35			  ; $80
       .BYTE $33,$35,$33,$35			  ; $84
       .BYTE $24,$26,$25,$27			  ; $88
-TileQuads2:.BYTE $FA,$FA,$FA,$FA		       
+TileQuads2:.BYTE $FA,$FA,$FA,$FA
       .BYTE $FA,$FA,$FA,$FA			  ; 4
       .BYTE $FA,$FA,$FA,$FA			  ; 8
       .BYTE $FA,$FA,$B0,$B1			  ; $C
@@ -4492,7 +4500,7 @@ TileQuads2:.BYTE $FA,$FA,$FA,$FA
       .BYTE $6C,$54,$6D,$55			  ; $E0
       .BYTE $32,$34,$33,$35			  ; $E4
       .BYTE $33,$35,$33,$35			  ; $E8
-TileQuads3:.BYTE $94,$95,$94,$95		       
+TileQuads3:.BYTE $94,$95,$94,$95
       .BYTE $96,$97,$96,$97			  ; 4
       .BYTE $48,$49,$48,$49			  ; 8
       .BYTE $FE,$FE,$FE,$FE			  ; $C
@@ -4536,7 +4544,7 @@ TileQuads3:.BYTE $94,$95,$94,$95
       .BYTE $72,$73,$4A,$4B			  ; $A4
       .BYTE $40,$42,$41,$43			  ; $A8
       .BYTE $41,$43,$41,$43			  ; $AC
-TileQuads4:.BYTE $40,$42,$41,$43		       
+TileQuads4:.BYTE $40,$42,$41,$43
       .BYTE $40,$42,$41,$43			  ; 4
       .BYTE $BA,$BC,$BB,$BD			  ; 8
       .BYTE $BA,$BC,$90,$91			  ; $C
@@ -4634,7 +4642,7 @@ byte_BANKF_FAB2:.BYTE 1
       .BYTE 2
       .BYTE 3
       .BYTE 0
-BackgroundCHRAnimationSpeedByWorld:.BYTE 7, 7, 7, 7, 9,	7, 5		       
+BackgroundCHRAnimationSpeedByWorld:.BYTE 7, 7, 7, 7, 9,	7, 5
       .BYTE $B
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -5006,14 +5014,16 @@ _unused_BANKF_FFA4:.BYTE $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $10
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $20
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $30
-      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF	  ; $40
+      .BYTE $FF	  ; $40
+      .BYTE $FF, $FF, $FF,$FF, $FF, $FF
+
 ; [00000047 BYTES: END OF AREA UNUSED-BANKF:FFA4. PRESS	KEYPAD "-" TO COLLAPSE]
 UnusedTextZELDA:.BYTE $5A
       .BYTE $45
       .BYTE $4C
       .BYTE $44
       .BYTE $41
-      .BYTE $DF, $E6, 0, 0, $38, 4, 1, 4, 1, $BE  
+      .BYTE $DF, $E6, 0, 0, $38, 4, 1, 4, 1, $BE
       .WORD NMI
       .WORD RESET
       .WORD $FFF0

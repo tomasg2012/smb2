@@ -421,7 +421,7 @@ EnemyStateHandling:
       JSR     JumpToTableAfterJump
 
 ; ---------------------------------------------------------------------------
-      .WORD locret_BANK2_820D			  
+      .WORD locret_BANK2_820D
       .WORD loc_BANK2_89B9			  ; Alive
       .WORD loc_BANK2_84FA			  ; Dead
       .WORD loc_BANK2_858F			  ; Block fizzle
@@ -731,7 +731,7 @@ loc_BANK2_83A6:
       JSR     JumpToTableAfterJump
 
 ; ---------------------------------------------------------------------------
-EnemyInitializationTable:.WORD sub_BANK2_845D			     
+EnemyInitializationTable:.WORD sub_BANK2_845D
       .WORD sub_BANK2_845D
       .WORD sub_BANK2_845D
       .WORD sub_BANK2_845D
@@ -1895,6 +1895,12 @@ loc_BANK2_89C9:
 
 loc_BANK2_89E2:
       LDA     ObjectType,X
+
+IFDEF _REV_A_
+      CMP     #Enemy_FryguySplit
+      BEQ     loc_BANK2_8A0A
+ENDIF
+
       CMP     #0
       BEQ     loc_BANK2_8A0A
 
@@ -5422,7 +5428,7 @@ unk_BANK2_9A6E:.BYTE   0
       .BYTE $2A
       .BYTE $2C
       .BYTE $2E
-      .BYTE $30	
+      .BYTE $30
       .BYTE $34
       .BYTE 0
       .BYTE $38
@@ -6257,9 +6263,11 @@ loc_BANK2_9EBA:
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $100
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $110
       .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $120
-      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF; $130
-      .BYTE $FF, $FF, $FF			  ; $140
+      .BYTE $FF, $FF, $FF, $FF,	$FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF,	$FF, $FF, $FF
+
+      IFNDEF _REV_A_
+        .BYTE $FF, $FF, $FF, $FF			  ; $140
+      ENDIF
 ; end of 'BANK2'
 
 ; ===========================================================================
-
