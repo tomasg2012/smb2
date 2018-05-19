@@ -4121,8 +4121,14 @@ sub_BANK0_94CA:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_94DC:
+IFDEF DOORCHANGES
+      LDA     #0
+      STA     PlayerState ;instead of setting sprite to default, set player state to default
+ENDIF 
+IFNDEF DOORCHANGES
       LDA     #1
       STA     byte_RAM_9D
+ENDIF 
       JSR     sub_BANK0_9561
 
       LSR     A
@@ -4168,6 +4174,9 @@ sub_BANK0_950C:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_9514:
+IFDEF DOORCHANGES
+      JMP     EnterDoor_Custom
+ENDIF
       LDA     PlayerXLo
       CLC
       ADC     #8
@@ -6990,6 +6999,10 @@ loc_BANK1_BB1F:
       RTS
 
 ; End of function CreateEnemy_TryAllSlots_Bank1
+
+IFDEF DOORCHANGES
+     .include "src/doorcode-0.asm"
+ENDIF
 
 ; ---------------------------------------------------------------------------
 ; The rest of this bank	is empty
