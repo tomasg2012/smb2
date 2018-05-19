@@ -1664,8 +1664,12 @@ loc_BANKF_E665:
       LDA     #$15
       STA     byte_RAM_5BD
       JSR     sub_BANKF_E9F4
-
+IFDEF CHARSELECT_AFTERDEATH
+      JMP     loc_BANKF_E435
+ENDIF
+IFNDEF CHARSELECT_AFTERDEATH
       JMP     loc_BANKF_E438
+ENDIF
 
 ; ---------------------------------------------------------------------------
 
@@ -1838,7 +1842,12 @@ EndOfLevel:
       INC     CharacterLevelsCompleted,X	  ; "contribution" counter
       LDA     CurrentLevel			  ; Check if we've just completed
       CMP     #$13				  ; the	final level
+IFDEF NOSLOTS
+      NOP
+ENDIF
+IFNDEF NOSLOTS
       BNE     EndOfLevelSlotMachine		  ; Jump to slots if not final level
+ENDIF
 
       JMP     EndingSceneRoutine		  ; Otherwise, do ending
 
@@ -4522,6 +4531,7 @@ sub_BANKF_F6A1:
       STA     CurrentLevel
 IFDEF WORLDFIX
       JSR WorldChangeF
+      JSR sub_BANKF_FE16
 ENDIF
       INY
       LDA     unk_RAM_51D,Y

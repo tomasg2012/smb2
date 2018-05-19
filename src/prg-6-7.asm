@@ -2936,7 +2936,7 @@ locret_BANK6_9547:
       LDA     unk_RAM_51D,Y
       STA     CurrentLevel
 IFDEF WORLDFIX
-      JSR WorldChange
+      JSR WorldChange ;; problem we need to switch chr banks but must set that up
 ENDIF
       INY
       LDA     unk_RAM_51D,Y
