@@ -1843,7 +1843,7 @@ EndOfLevel:
       LDA     CurrentLevel			  ; Check if we've just completed
       CMP     #$13				  ; the	final level
 IFDEF NOSLOTS
-      NOP
+      JMP     StartCharacterSelectMenu+4
 ENDIF
 IFNDEF NOSLOTS
       BNE     EndOfLevelSlotMachine		  ; Jump to slots if not final level
@@ -4531,7 +4531,7 @@ sub_BANKF_F6A1:
       STA     CurrentLevel
 IFDEF WORLDFIX
       JSR WorldChangeF
-      JSR sub_BANKF_FE16
+      ; JSR sub_BANKF_FE16
 ENDIF
       INY
       LDA     unk_RAM_51D,Y

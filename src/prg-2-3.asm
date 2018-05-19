@@ -2655,8 +2655,9 @@ loc_BANK2_8D8A:
 
 loc_BANK2_8DAC:
       CPY     #2
+IFNDEF NOSLOTS_EAGLE
       BCC     loc_BANK2_8DB4
-
+ENDIF
       INC     byte_RAM_627
       RTS
 
