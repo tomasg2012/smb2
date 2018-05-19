@@ -4520,6 +4520,9 @@ sub_BANKF_F6A1:
       TAY
       LDA     unk_RAM_51D,Y
       STA     CurrentLevel
+IFDEF WORLDFIX
+      JSR WorldChangeF
+ENDIF
       INY
       LDA     unk_RAM_51D,Y
       LSR     A
@@ -5118,6 +5121,10 @@ loc_BANKF_FB1C:
       BEQ     loc_BANKF_FB19
 
 ; ---------------------------------------------------------------------------
+IFDEF WORLDFIX
+     .include "src/worldchange-f.asm"
+ENDIF
+
 IFDEF PRESERVE_UNUSED_SPACE
      ; Unused space in the original
      ; $FB36 - $FDFF

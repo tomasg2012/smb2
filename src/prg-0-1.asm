@@ -4252,6 +4252,9 @@ loc_BANK0_9567:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_956A:
+IFDEF DOORCHANGES
+      JMP     EnterDoor_Custom
+ENDIF
       LDA     PlayerXLo
       CLC
       ADC     #8

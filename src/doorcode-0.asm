@@ -1,9 +1,7 @@
 
 
 EnterDoor_Custom:
-    LDA #1
-    STA TransitionType
-    LDA PlayerState_Normal
+    LDA #PlayerState_Normal
     STA PlayerState
     STA PlayerXLo
     STA byte_RAM_E5  
@@ -71,8 +69,8 @@ FindVine_J1:
     JSR sub_BANK1_BA4E
     LDY byte_RAM_E7
     LDA (byte_RAM_1),Y
-    LDY #5
--   CMP byte_BANK0_8B2B-1,Y ;; compare to doors
+    LDY #9
+-   CMP byte_BANK0_8B2B-1,Y ;; compare to vines
     BEQ + ;; if tru end
     DEY
     BNE - ;; else loop if y > 0
@@ -84,17 +82,17 @@ FindVine_J1:
 +   JSR VineSetVelocity
     JMP FindVine_J5
 FindVine_J4:
-    JSR loc_BANK0_94DC
+    JMP loc_BANK0_94DC ;; go to default behavior
 FindVine_J5:
     LDA #0
     STA byte_RAM_41B
     RTS
 
 VineSetVelocity:
-    LDA PlayerState_ClimbingAreaTransition
+    LDA #PlayerState_ClimbingAreaTransition
     STA PlayerState
     STA byte_RAM_4EA
-    LDA SpriteAnimation_Climbing
+    LDA #SpriteAnimation_Climbing
     STA PlayerAnimationFrame
     LDA PlayerYLo
     BPL VineSetVelocity_Down

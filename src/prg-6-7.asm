@@ -2935,6 +2935,9 @@ locret_BANK6_9547:
       TAY
       LDA     unk_RAM_51D,Y
       STA     CurrentLevel
+IFDEF WORLDFIX
+      JSR WorldChange
+ENDIF
       INY
       LDA     unk_RAM_51D,Y
       LSR     A
@@ -3848,6 +3851,10 @@ loc_BANK6_9934:
       RTS
 
 ; End of function sub_BANK6_98F7
+
+IFDEF WORLDFIX
+     .include "src/worldchange-7.asm"
+ENDIF
 
 ; ---------------------------------------------------------------------------
 ; The rest of this bank	pair is	empty
