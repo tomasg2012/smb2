@@ -2658,6 +2658,7 @@ loc_BANK2_8DAC:
 IFNDEF NOSLOTS_EAGLE
       BCC     loc_BANK2_8DB4
 ENDIF
+
       INC     byte_RAM_627
       RTS
 
@@ -3235,7 +3236,7 @@ loc_BANK2_9066:
 ; ---------------------------------------------------------------------------
 
 loc_BANK2_9069:
-      JSR     CarryObject ;; add table for what crystals have been acquired
+      JSR     CarryObject  ;; crystals here
 
       LDA     #0
       STA     HoldingItem
@@ -3271,7 +3272,7 @@ SomethingAboutPickingShitUp:
       BNE     loc_BANK2_90B1
 
       LDX     EnemyVariable
-IFDEF HEALTH_REVAMP:
+IFDEF HEALTH_REVAMP
       JSR     StoreMushroomState
 ENDIF
       INC     Mushroom1Pulled,X
@@ -11910,10 +11911,10 @@ loc_BANK3_BE34:
 loc_BANK3_BE55:
       LDA     #$30
       STA     byte_RAM_0
-      JSR     loc_BANKF_FAFE ;; acquire dma bank
+      JSR     loc_BANKF_FAFE
 
       LDA     PlayerHealth
-      BEQ     loc_BANK3_BE67 ;; draw empty slots
+      BEQ     loc_BANK3_BE67
 
       AND     #$F0
       LSR     A
@@ -11927,9 +11928,9 @@ loc_BANK3_BE67:
 
 loc_BANK3_BE6C:
 IFDEF HEALTH_REVAMP
-      JSR NewHealthRender
-      JMP loc_PowQuakeCheck 
+      JSR     NewHealthRender
 ENDIF
+IFNDEF HEALTH_REVAMP
       LDA     byte_BANK3_BDEF,X
       STA     SpriteDMAArea+1,Y
       LDA     #$10
@@ -11950,9 +11951,8 @@ ENDIF
       LDA     byte_RAM_3
       CMP     PlayerMaxHealth
       BNE     loc_BANK3_BE6C
-IFDEF HEALTH_REVAMP
-loc_PowQuakeCheck:
 ENDIF
+
       LDA     POWQuakeTimer
       BEQ     locret_BANK3_BEAF
 
@@ -11976,11 +11976,12 @@ loc_BANK3_BEA6:
 locret_BANK3_BEAF:
       RTS
 
+; End of function sub_BANK3_BE0B
+
 IFDEF HEALTH_REVAMP
-     .include "src/health-revamp-3.asm"
+      .include "src/health-revamp-3.asm"
 ENDIF
 
-; End of function sub_BANK3_BE0B
 
 ; ---------------------------------------------------------------------------
 ; The rest of this bank	is empty

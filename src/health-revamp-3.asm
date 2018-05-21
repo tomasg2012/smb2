@@ -1,12 +1,20 @@
 
+ResetMushroomState:
+    LDX #20
+ResetMushroomState_Loop
+    EOR $7950,X
+    DEX
+    BPL ResetMushroomState_Loop
+    RTS
+    
 StoreMushroomState:
     TXA
     PHA
     LDA     CurrentLevel
-    RSL
+    ASL
     ADC     EnemyVariable
     TAX
-    INC     $7800,X
+    INC     $7950,X
     PLA
     TAX
     RTS
@@ -35,11 +43,10 @@ DrawHealthPip:
     INC byte_RAM_3
     LDA byte_RAM_3
     CMP #8
-    BCC DrawHealthPip
-    PLA
+    BCS +
     CMP PlayerMaxHealth
     BCC DrawHealthPip
-    PLA
++   PLA
     TAX
     LDA PlayerHealth
     BEQ EndDrawHealth

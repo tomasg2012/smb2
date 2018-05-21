@@ -2608,7 +2608,7 @@ sub_BANK6_93A4:
       BNE     loc_BANK6_93B1
 
       JSR     HijackLevelDataCopyAddressWithJar	  ; This function call will overwrite the
-						  ; normal level loading area with $7A00
+						  ; normal level loading area with $7950
 
       JMP     loc_BANK6_93B4
 
@@ -2803,13 +2803,14 @@ loc_BANK6_9492:
       SEC					  ; Some code involving	Subspace mushrooms
 						  ; Checking if	it should create a Subspace object?
       SBC     #$41
+      TAY
 IFDEF HEALTH_REVAMP:
 GetMushroomState:
-      BEQ     GetMushroomState_AddOne
+      BNE     GetMushroomState_AddOne
       LDA     CurrentLevel
       ASL
       TAX
-      LDA     $7800,X
+      LDA     $7950,X
       STA     Mushroom1Pulled
       JMP     GetMushroomState_End
 GetMushroomState_AddOne:
@@ -2817,12 +2818,11 @@ GetMushroomState_AddOne:
       ASL
       ADC     #1
       TAX
+      LDA     $7950,X
       STA     Mushroom1Pulled
-      LDA     $7800,X
 GetMushroomState_End:
       LDA     #0
 ENDIF
-      TAY
       LDA     Mushroom1Pulled,Y
       BNE     loc_BANK6_94A0
 
