@@ -3504,10 +3504,26 @@ loc_BANKF_F1E3:
 ; =============== S U B	R O U T	I N E =======================================
 
 RestorePlayerToFullHealth:
+IFDEF HEALTH_REVAMP
+      LDA     #$F 
+      STA     PlayerHealth
+      LDA     PlayerMaxHealth
+      CLC
+      ADC     #1
+      ASL
+      ASL
+      ASL
+      ASL
+      ADC     PlayerHealth
+      STA     PlayerHealth
+      RTS
+ENDIF
+IFNDEF HEALTH_REVAMP
       LDY     PlayerMaxHealth			  ; Get	player's current max HP
       LDA     PlayerHealthValueByHeartCount,Y	  ; Get	the health value for this amount of hearts
       STA     PlayerHealth
       RTS
+ENDIF
 
 ; End of function RestorePlayerToFullHealth
 
@@ -4531,7 +4547,10 @@ sub_BANKF_F6A1:
       STA     CurrentLevel
 IFDEF WORLDFIX
       JSR WorldChangeF
-      ; JSR sub_BANKF_FE16
+      JSR sub_BANKF_FE16
+      LDA     byte_RAM_535
+      ASL     A
+      TAY
 ENDIF
       INY
       LDA     unk_RAM_51D,Y
@@ -5416,3 +5435,4 @@ NESVectorTables:
       .WORD IRQ
 ; end of 'BANKF'
 ; End
+

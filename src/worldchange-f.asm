@@ -1,5 +1,5 @@
 WorldChangeF:
-    PHA
+    PHA ;; after this, reload character tables
     LSR CurrentWorld
     LSR CurrentWorld
     LSR CurrentWorld

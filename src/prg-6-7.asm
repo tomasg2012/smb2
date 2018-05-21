@@ -2803,6 +2803,25 @@ loc_BANK6_9492:
       SEC					  ; Some code involving	Subspace mushrooms
 						  ; Checking if	it should create a Subspace object?
       SBC     #$41
+IFDEF HEALTH_REVAMP:
+GetMushroomState:
+      BEQ     GetMushroomState_AddOne
+      LDA     CurrentLevel
+      ASL
+      TAX
+      LDA     $7800,X
+      STA     Mushroom1Pulled
+      JMP     GetMushroomState_End
+GetMushroomState_AddOne:
+      LDA     CurrentLevel
+      ASL
+      ADC     #1
+      TAX
+      STA     Mushroom1Pulled
+      LDA     $7800,X
+GetMushroomState_End:
+      LDA     #0
+ENDIF
       TAY
       LDA     Mushroom1Pulled,Y
       BNE     loc_BANK6_94A0
