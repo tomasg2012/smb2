@@ -975,6 +975,7 @@ loc_BANK2_8509:
 
       JSR     sub_BANK2_8208
 
+
       LDA     #Music2_BossClearFanfare
       STA     MusicQueue2
       LDA     unk_RAM_4EF,X
@@ -1517,6 +1518,27 @@ loc_BANK2_87AC:
       LDA     EnemyTimer,X
       CMP     #3
       BNE     locret_BANK2_8797
+
+IFDEF BOSS_MUSHROOM:
+      TXA
+      PHA
+
+      JSR     CreateEnemy_TryAllSlots
+      LDX     byte_RAM_0
+      LDA     #$FF
+      STA     EnemyVariable
+      LDA     #Enemy_Mushroom 
+      STA     ObjectType,X
+      LDA     ObjectYLo,X
+      ADC     #8
+      STA     ObjectYLo,X
+      LDA     #$E0
+      STA     ObjectYAccel,X
+      JSR     SetEnemyAttributes
+
+      PLA
+      TAX
+IFNDEF
 
       LDY     #$22
       LDA     ObjectType,X

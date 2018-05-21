@@ -8,15 +8,19 @@ ResetMushroomState_Loop
     RTS
     
 StoreMushroomState:
+    LDA EnemyVariable
+    CMP #$FF
+    BEQ StoreMushroomState_End
     TXA
     PHA
-    LDA     CurrentLevel
+    LDA CurrentLevel
     ASL
-    ADC     EnemyVariable
+    ADC EnemyVariable
     TAX
-    INC     $7950,X
+    INC $7950,X
     PLA
     TAX
+StoreMushroomState_End:
     RTS
 
 NewHealthRender:
@@ -42,7 +46,7 @@ DrawHealthPip:
     INC byte_RAM_3
     INC byte_RAM_3
     LDA byte_RAM_3
-    CMP #8
+    CMP #6
     BCS +
     CMP PlayerMaxHealth
     BCC DrawHealthPip
