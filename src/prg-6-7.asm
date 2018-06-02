@@ -2822,6 +2822,7 @@ GetMushroomState_AddOne:
       STA     Mushroom1Pulled
 GetMushroomState_End:
       LDA     #0
+      TAY
 ENDIF
       LDA     Mushroom1Pulled,Y
       BNE     loc_BANK6_94A0

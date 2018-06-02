@@ -39,19 +39,22 @@ DrawHealthPip:
     ADC #$10
     STA byte_RAM_0
     INX
-    INY
-    INY
-    INY
-    INY
     INC byte_RAM_3
     INC byte_RAM_3
     LDA byte_RAM_3
     CMP #6
     BCS +
     CMP PlayerMaxHealth
-    BCC DrawHealthPip
+    BCS +
+    INY
+    INY
+    INY
+    INY
+    JMP DrawHealthPip
 +   PLA
     TAX
+    TYA
+    STA byte_RAM_3
     LDA PlayerHealth
     BEQ EndDrawHealth
 FillHealthPip:
@@ -69,6 +72,8 @@ FillHealthPip:
     ;SBC #$10
     ;BCC EndFillHealth
     INX
+    CPX byte_RAM_3
+    BCS EndFillHealth
     INX
     INX
     INX

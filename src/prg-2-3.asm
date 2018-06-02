@@ -1527,7 +1527,7 @@ IFDEF BOSS_MUSHROOM:
       LDX     byte_RAM_0
       LDA     #$FF
       STA     EnemyVariable
-      LDA     #Enemy_Mushroom 
+      LDA     #Enemy_NinjiRunning 
       STA     ObjectType,X
       LDA     ObjectYLo,X
       ADC     #8
@@ -1538,7 +1538,7 @@ IFDEF BOSS_MUSHROOM:
 
       PLA
       TAX
-IFNDEF
+ENDIF
 
       LDY     #$22
       LDA     ObjectType,X
@@ -5261,7 +5261,7 @@ loc_BANK2_99A1:
 
 loc_BANK2_99AD:
       LDA     #EnemyState_Dead
-      STA     EnemyState,X
+      STA     EnemyState,X ;; where to place some sort of spawn on death (ONCE)
       PLA
       PLA
 
