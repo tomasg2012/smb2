@@ -7,6 +7,7 @@ WorldChange:
     SBC #$02
     BCC + 
     INC CurrentWorld
+    BNE -
 +   PLA
     RTS
 

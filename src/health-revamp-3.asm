@@ -15,6 +15,7 @@ StoreMushroomState:
     PHA
     LDA CurrentLevel
     ASL
+    CLC
     ADC EnemyVariable
     TAX
     INC $7950,X

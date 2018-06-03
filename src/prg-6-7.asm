@@ -2447,6 +2447,7 @@ byte_BANK6_927C:
       .BYTE 0
       .BYTE 0
       .BYTE $A
+;; page lookup table
 byte_BANK6_92F8:
 	  .BYTE 0
 
@@ -2805,24 +2806,7 @@ loc_BANK6_9492:
       SBC     #$41
       TAY
 IFDEF HEALTH_REVAMP:
-GetMushroomState:
-      BNE     GetMushroomState_AddOne
-      LDA     CurrentLevel
-      ASL
-      TAX
-      LDA     $7950,X
-      STA     Mushroom1Pulled
-      JMP     GetMushroomState_End
-GetMushroomState_AddOne:
-      LDA     CurrentLevel
-      ASL
-      ADC     #1
-      TAX
-      LDA     $7950,X
-      STA     Mushroom1Pulled
-GetMushroomState_End:
-      LDA     #0
-      TAY
+      JSR     GetMushroomState
 ENDIF
       LDA     Mushroom1Pulled,Y
       BNE     loc_BANK6_94A0
@@ -3372,6 +3356,7 @@ loc_BANK6_971B:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+;; start checking for F codes here
 sub_BANK6_9728:
       LDA     #0
       STA     byte_RAM_540
@@ -3380,7 +3365,7 @@ loc_BANK6_972D:
       LDA     #0
       STA     byte_RAM_9
 
-loc_BANK6_9731:
+loc_BANK6_9731: ;; check if we're ending...
       LDA     (byte_RAM_5),Y
       CMP     #$FF
       BNE     loc_BANK6_9746
@@ -3394,13 +3379,13 @@ loc_BANK6_9731:
 
 ; ---------------------------------------------------------------------------
 
-loc_BANK6_9746:
+loc_BANK6_9746: ;; check if we're special F code
       LDA     (byte_RAM_5),Y
       AND     #$F0
       BEQ     loc_BANK6_976F
 
       CMP     #$F0
-      BNE     loc_BANK6_9774
+      BNE     loc_BANK6_9774 ;; otherwise check!!
 
       LDA     (byte_RAM_5),Y
       AND     #$F
@@ -3425,16 +3410,19 @@ loc_BANK6_976B:
       CMP     #6
       BNE     loc_BANK6_9770
 
-loc_BANK6_976F:
+loc_BANK6_976F: ;; skip two bytes
       INY
-
-loc_BANK6_9770:
+ 
+loc_BANK6_9770: ;; skip 1 byte, then return to check if we're ending
       INY
       JMP     loc_BANK6_9731
 
 ; ---------------------------------------------------------------------------
 
-loc_BANK6_9774:
+loc_BANK6_9774: ;; check if we're not F0 ( start check if we're a door )
+IFDEF BUGFIX_VERTDOOR:
+	  JSR 	  BugFixDoor
+ENDIF
       CLC
       ADC     byte_RAM_9
       BCC     loc_BANK6_977E
@@ -3455,7 +3443,10 @@ loc_BANK6_9784:
 
 loc_BANK6_9787:
       STA     byte_RAM_9
-      JMP     loc_BANK6_976F
+IFDEF BUGFIX_VERTDOOR:
+SkipDoorReadMain:
+ENDIF
+      JMP     loc_BANK6_976F ;; end replace
 
 ; ---------------------------------------------------------------------------
 
@@ -3687,6 +3678,7 @@ sub_BANK6_985E:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+;; Get tile table
 sub_BANK6_9878:
       LDX     byte_RAM_E8
       JSR     sub_BANK6_9885
@@ -3874,6 +3866,12 @@ loc_BANK6_9934:
 
 IFDEF WORLDFIX
      .include "src/worldchange-7.asm"
+ENDIF
+IFDEF HEALTH_REVAMP
+     .include "src/health-revamp-7.asm"
+ENDIF
+IFDEF BUGFIX_VERTDOOR
+     .include "src/vertical-bugfix-7.asm"
 ENDIF
 
 ; ---------------------------------------------------------------------------

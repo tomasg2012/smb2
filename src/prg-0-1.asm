@@ -4111,6 +4111,7 @@ sub_BANK0_94CA:
       LDA     TransitionType
       JSR     JumpToTableAfterJump
 
+;; our jump commands
 ; ---------------------------------------------------------------------------
       .WORD loc_BANK0_94DC
       .WORD loc_BANK0_9514
@@ -6770,6 +6771,7 @@ sub_BANK1_BA48:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+;; load DecodedLevel memory tile into E7
 sub_BANK1_BA4E:
       LDX     byte_RAM_E8
       JSR     sub_BANK1_BA71
@@ -6783,6 +6785,7 @@ sub_BANK1_BA4E:
 ; End of function sub_BANK1_BA4E
 
 ; ---------------------------------------------------------------------------
+; page lookup table
 byte_BANK1_BA5B:
 	  .BYTE 0
 

@@ -11645,9 +11645,10 @@ locret_BANK3_BD28:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+; get specific tile and store into E7
 sub_BANK3_BD29:
       LDX     byte_RAM_E8
-      JSR     sub_BANK3_BD4C
+      JSR     sub_BANK3_BD4C ;; get page ptr from table
 
       LDA     byte_RAM_E6
       CLC
@@ -11658,6 +11659,7 @@ sub_BANK3_BD29:
 ; End of function sub_BANK3_BD29
 
 ; ---------------------------------------------------------------------------
+; page lookup table
 byte_BANK3_BD36:
 	  .BYTE 0
 
