@@ -3401,6 +3401,12 @@ loc_BANK2_910D:
       STA     DPCMQueue
       LSR     A
       STA     EnemyArray_42F,X
+IFDEF DOORCHANGES
+      LDA #0
+      STA byte_RAM_41B
+      STA     EnemyArray_B1,X
+      STA     byte_RAM_4C7
+ENDIF
       RTS
 
 ; ---------------------------------------------------------------------------
@@ -6152,6 +6158,7 @@ locret_BANK2_9E4A:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+Add10ToXRegister:
 sub_BANK2_9E4B:
       TXA
       CLC
@@ -8371,6 +8378,7 @@ loc_BANK3_AB3B:
 
       DEC     ObjectYAccel,X
 
+RocketBehavior:
 loc_BANK3_AB42:
       JSR     sub_BANK2_9E4B
 
@@ -8401,6 +8409,9 @@ ENDIF
 ; ---------------------------------------------------------------------------
 
 loc_BANK3_AB64:
+IF DOORCHANGES:
+      JMP     loc_BANK2_910D
+ENDIF
       LDA     ObjectYLo,X
       CMP     #$30
       BCS     loc_BANK3_AB88

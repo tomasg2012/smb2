@@ -1875,11 +1875,13 @@ LoseALife:
       LDA     #2
       STA     PlayerAnimationFrame
       LDY     #1				  ; Set	game mode to title card
+IFNDEF COURSE_GEN
       DEC     ExtraLives
       BNE     SetGameModeAfterDeath
 
       INY					  ; If no lives, increase game mode
 						  ; from 1 (title card)	to 2 (game over)
+ENDIF
 
 SetGameModeAfterDeath:
       STY     GameMode
@@ -4123,8 +4125,7 @@ sub_BANK0_94CA:
 
 loc_BANK0_94DC:
 IFDEF DOORCHANGES
-      LDA     #0
-      STA     PlayerState ;instead of setting sprite to default, set player state to default
+      JMP EnterDefault_Custom
 ENDIF 
 IFNDEF DOORCHANGES
       LDA     #1
@@ -4298,6 +4299,9 @@ loc_BANK0_958C:
 ; ---------------------------------------------------------------------------
 
 loc_BANK0_95A7:
+IFDEF DOORCHANGES
+      JMP     EnterDoor_Custom
+ENDIF
       JSR     sub_BANK0_9561
 
       LDA     #$60
@@ -4446,11 +4450,24 @@ TitleLayout1:
       .BYTE $21,$B1,8,$E,8,$E,8,8,8,$12,8	  
       .BYTE $21,$D1,9,$13,5,8,8,4,5,4,5,8	  
       .BYTE $21,$F1,9,$11,7,9,9,6,7,6,7,9	  
+IFDEF COURSE_GEN
+      .BYTE $22,$6,4,$14,$15,$16,$17		  
+      .BYTE $22,$26,4,$18,$19,$1A,$1B		  
+      .BYTE $22,$46,4,$1C,$1D,$1E,$1F		  
+      .BYTE $22,$66,4,$FC,$FC,$FC,$20		  
+      .BYTE $22,$86,4,$76,$76,$76,$21		  
+FunkyLittleSeedBlock:
+      .BYTE $22, $B, $0F, $DD, $E8, $E8, $EB, $FB, $EB, $DA, $E7, $DD, $E8, $E6, $E2, $F3, $DE, $EB;
+FunkyLittleSeedBlock2:
+      .BYTE $22, $4B, $0F, $EC, $DE, $DE, $DD, $FB, $DF, $DF, $DF, $DF, $DF, $DF, $DF, $DF, $DF, $DF; 
+ENDIF
+IFNDEF COURSE_GEN
       .BYTE $22,$E,4,$14,$15,$16,$17		  
       .BYTE $22,$2E,4,$18,$19,$1A,$1B		  
       .BYTE $22,$4E,4,$1C,$1D,$1E,$1F		  
       .BYTE $22,$6E,4,$FC,$FC,$FC,$20		  
       .BYTE $22,$8E,4,$76,$76,$76,$21		  
+ENDIF
       .BYTE $22,$E9,5,$F8,$D1,$D9,$D8,$D8	  ;	(C) 1988
       .BYTE $22,$EF,8,$E7,$E2,$E7,$ED,$DE,$E7,$DD,$E8; NINTENDO
 						  ; (these could have been combined, but... Nintendo)
@@ -4461,7 +4478,12 @@ TitleLayout1:
       .BYTE $23,$EA,4,$F0,$F8,$F2,$F0		  
       .BYTE 0
 TitleBackgroundPalettes:
+IFDEF COURSE_GEN 
+	  .BYTE $22,$37,$99,5
+ENDIF
+IFNDEF COURSE_GEN
 	  .BYTE $22,$37,$16,7
+ENDIF
       .BYTE $22,$30,$31,$F			  ; 1: Most of screen, outline,	etc.
       .BYTE $22,$30,$F,$F			  ; 2: Not used	(?)
       .BYTE $22,$30,$F,$F			  ; 3: SUPER MARIO BROS. 2 logo

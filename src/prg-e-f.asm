@@ -4562,6 +4562,14 @@ ENDIF
       LDA     unk_RAM_51D,Y
       AND     #$F
       STA     CurrentLevelPage
+IFDEF DOORCHANGES
+      SEC
+      SBC     #$A
+      BNE IgnorePageByte
+      STA CurrentLevelPage
+      STA TransitionType
+IgnorePageByte:
+ENDIF
       RTS
 
 ; End of function sub_BANKF_F6A1

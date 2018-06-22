@@ -1,4 +1,57 @@
+MoveByXLo:
+    LDA PlayerXLo
+    SEC
+    SBC #$10
+    STA PlayerXLo
+    RTS
 
+MoveByYLo:
+    LDA PlayerYLo
+    SEC
+    SBC #$10
+    STA PlayerYLo
+    RTS
+
+EnterDefault_Custom:
+    LDA #0
+    STA PlayerState ;instead of setting sprite to default, set player state to default
+    STA byte_RAM_41B
+    LDA #$E0
+    STA PlayerYLo
+    JSR sub_BANK0_9561
+    LSR A
+    LSR A
+    LSR A
+    LSR A
+    STA byte_RAM_E5
+    LDA #$D0
+    STA PlayerYLo
+    STA byte_RAM_E6
+    LDA CurrentLevelPage
+    STA byte_RAM_E8
+    LDA #$DF
+    STA byte_RAM_3
+    JSR sub_BANK1_BA4E
+    JMP ++
+EnterDefault_Reap:
+    DEC byte_RAM_3
+    BEQ +
+    JSR MoveByYThenX
+-  JSR sub_BANK1_BA4E ;; check tile
+++  LDY byte_RAM_E7
+    LDA (byte_RAM_1),Y
+    CMP #$40
+    BEQ EnterDefault_Reap
+    DEC byte_RAM_3
+    BEQ +
+    JSR MoveByYThenX
+    JSR sub_BANK1_BA4E
+    LDY byte_RAM_E7
+    LDA (byte_RAM_1),Y
+    CMP #$40
+    BNE -
++   JSR MoveByYLo
+    RTS 
 
 EnterDoor_Custom:
     LDA #PlayerState_Normal
@@ -25,7 +78,6 @@ EnterDoor_J2:
     DEC byte_RAM_3 
     BEQ EnterDoor_J3 ;; skip if tilepos aint done else
     JSR MoveByXThenY
-    STA byte_RAM_E6
     JMP EnterDoor_J1
 EnterDoor_J3:
     JMP FindVine_Custom
@@ -47,9 +99,44 @@ MoveByXThenY:
     ASL
     STA PlayerXLo
     BNE +
-    JSR sub_BANK0_950C
+    JSR MoveByYLo
+    STA byte_RAM_E6
     RTS
 +   LDA PlayerYLo
+    STA byte_RAM_E6
+    RTS
+
+MoveByYThenX:
+    LDA byte_RAM_E6
+    SEC
+    SBC #$10
+    AND #$F0
+    STA PlayerYLo
+    STA byte_RAM_E6
+    LDA PlayerYLo
+    CMP #$00
+    BNE +
+    SEC
+    SBC #$20
+    AND #$F0
+    STA PlayerYLo
+    STA byte_RAM_E6
+    JSR MoveByXLo
+    CMP #$F0
+    BNE ++
+    JSR MoveByXLo
+++  LSR
+    LSR
+    LSR
+    LSR
+    STA byte_RAM_E5
+    RTS
++   LDA PlayerXLo
+    LSR
+    LSR
+    LSR
+    LSR
+    STA byte_RAM_E5
     RTS
     
 
@@ -77,7 +164,6 @@ FindVine_J1:
     DEC byte_RAM_3 
     BEQ FindVine_J4 ;; skip if tilepos aint done else
     JSR MoveByXThenY
-    STA byte_RAM_E6
     JMP FindVine_J0
 +   JSR VineSetVelocity
     JMP FindVine_J5

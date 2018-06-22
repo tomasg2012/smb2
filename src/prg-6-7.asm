@@ -1049,6 +1049,7 @@ loc_BANK6_8BA1:
       RTS
 
 ; ---------------------------------------------------------------------------
+TileMapRoundSquarePlatform:
 byte_BANK6_8BAA:
 	  .BYTE $CA
 
@@ -1803,6 +1804,7 @@ loc_BANK6_8F0B:
       RTS
 
 ; ---------------------------------------------------------------------------
+TileBankWaterfallFrozen: ;??
 byte_BANK6_8F13:
 	  .BYTE $C
 
@@ -2952,6 +2954,15 @@ ENDIF
       LDA     unk_RAM_51D,Y
       AND     #$F
       STA     CurrentLevelPage
+IFDEF WORLDFIX
+      LDA     CurrentLevelPage
+      SEC
+      SBC     #$A
+      BNE DontDoThat
+      STA     CurrentLevelPage
+      STA     TransitionType
+DontDoThat:
+ENDIF
       RTS
 
 ; =============== S U B	R O U T	I N E =======================================
