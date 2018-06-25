@@ -1306,9 +1306,13 @@ loc_BANKF_E491:
       LDA     NeedVerticalScroll
       AND     #4
       BNE     loc_BANKF_E4A3
-
+IFDEF PLAYER_STUFF
+      JSR     PollCharSwitch
+ENDIF
+IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
+ENDIF
       BEQ     loc_BANKF_E4A3
 
       JMP     loc_BANKF_E515
@@ -1372,9 +1376,13 @@ loc_BANKF_E4E5:
       LDA     NeedVerticalScroll
       AND     #4
       BNE     loc_BANKF_E4F4
-
+IFDEF PLAYER_STUFF
+      JSR     PollCharSwitch
+ENDIF
+IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
+ENDIF
       BNE     loc_BANKF_E515
 
 loc_BANKF_E4F4:
@@ -1428,8 +1436,13 @@ DoSuicideCheatCheck:
       JSR     KillPlayer			  ; KILL THYSELF
 
 loc_BANKF_E533:
+IFDEF PLAYER_STUFF
+      JSR     PollCharSwitch
+ENDIF
+IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
+ENDIF
       BNE     loc_BANKF_E54B
 
       DEC     byte_RAM_6
@@ -1673,11 +1686,14 @@ ENDIF
 
 ; ---------------------------------------------------------------------------
 
+ResetLevelAndCharToNeutral:
 loc_BANKF_E69F:
+IFDEF COURSE_GEN
       LDA     #PlayerHealth_2_HP
       STA     PlayerHealth
       LDA     #0
       STA     PlayerMaxHealth
+ENDIF
       STA     KeyUsed
       STA     Mushroom1upPulled
       STA     Mushroom1Pulled
@@ -1777,8 +1793,13 @@ loc_BANKF_E733:
       STA     ScreenUpdateIndex
 
 loc_BANKF_E747:
+IFDEF PLAYER_STUFF
+      JSR     PollCharSwitch
+ENDIF
+IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
+ENDIF
       BEQ     loc_BANKF_E719
 
       LDA     byte_RAM_8
@@ -1843,7 +1864,7 @@ EndOfLevel:
       LDA     CurrentLevel			  ; Check if we've just completed
       CMP     #$13				  ; the	final level
 IFDEF NOSLOTS
-      JMP     StartCharacterSelectMenu+4
+      BNE     StartCharacterSelectMenu+4
 ENDIF
 IFNDEF NOSLOTS
       BNE     EndOfLevelSlotMachine		  ; Jump to slots if not final level
@@ -3016,9 +3037,26 @@ UpdatePPUFBWO_CopySingleTileSkip:
 
 ; End of function UpdatePPUFromBufferWithOptions
 
+IFDEF PLAYER_STUFF
+PollCharSwitch:
+      LDA     Player1JoypadPress
+      AND     #ControllerInput_Select
+      BEQ     EndPollChar
+      LDA     #PRGBank_A_B
+      JSR     ChangeMappedPRGBank
+      JSR     CustomCopyChar
+      LDA     #$01
+      STA     byte_RAM_4C6
+      JSR     loc_BANKF_FE33 ; update chr
+EndPollChar:
+      LDA     Player1JoypadPress
+      AND     #ControllerInput_Start
+      RTS
+ENDIF
 IFDEF DEBUG
       .include "src/debug-f.asm"
 ENDIF
+
 ; ---------------------------------------------------------------------------
 IFDEF PRESERVE_UNUSED_SPACE
      ; Unused space in the original

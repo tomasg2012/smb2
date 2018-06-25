@@ -618,6 +618,9 @@ UnusedText_Blank214D:
 IFDEF DEBUG
      .include "src/debug-a.asm"
 ENDIF
+IFDEF PLAYER_STUFF
+     .include "src/player-stuff-a.asm"
+ENDIF
 ; The rest of this bank	pair is	empty
 
 
