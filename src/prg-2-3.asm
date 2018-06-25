@@ -1527,7 +1527,7 @@ IFDEF BOSS_MUSHROOM:
       LDX     byte_RAM_0
       LDA     #$FF
       STA     EnemyVariable
-      LDA     #Enemy_NinjiRunning 
+      LDA     #Enemy_Mushroom
       STA     ObjectType,X
       LDA     ObjectYLo,X
       ADC     #8

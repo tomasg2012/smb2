@@ -17,13 +17,14 @@ BugFixDoor: ;???
         PHA
         TYA
         PHA
-        LDA byte_RAM_5,Y
+        DEY
+        LDA (byte_RAM_5),Y
         LDY #0
 FindOurDoor:
         CMP TableDoorTypes,Y
         BEQ SkipDoorRead
         INY
-		CMP #9
+		CPY #9
         BNE FindOurDoor 
 DefaultNoSkip:
         PLA
@@ -31,7 +32,7 @@ DefaultNoSkip:
         PLA
         TAX
         PLA
-        RTS
+		JMP ResumeDoor
 SkipDoorRead:
         PLA
         TAY

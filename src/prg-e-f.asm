@@ -1688,7 +1688,7 @@ ENDIF
 
 ResetLevelAndCharToNeutral:
 loc_BANKF_E69F:
-IFDEF COURSE_GEN
+IFNDEF COURSE_GEN
       LDA     #PlayerHealth_2_HP
       STA     PlayerHealth
       LDA     #0
