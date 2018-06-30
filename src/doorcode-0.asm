@@ -15,29 +15,29 @@ MoveByYLo:
 EnterDefault_Custom:
     LDA #0
     STA PlayerState ;instead of setting sprite to default, set player state to default
-    STA byte_RAM_41B
+    STA byte_RAM_41B ; restore state?
     LDA #$E0
     STA PlayerYLo
-    JSR sub_BANK0_9561
+    JSR sub_BANK0_9561 ; put player in air
     LSR A
     LSR A
     LSR A
     LSR A
-    STA byte_RAM_E5
-    LDA #$D0
-    STA PlayerYLo
-    STA byte_RAM_E6
+    STA byte_RAM_E5 ; get proper y tile for "check tile"
+    LDA #$D0 
+    STA PlayerYLo ; wait why do we set it up a bit, we just stored the y tile,
+    STA byte_RAM_E6 ; this might be for X, but seems to still work
     LDA CurrentLevelPage
-    STA byte_RAM_E8
+    STA byte_RAM_E8 ; level page for "check tile"
     LDA #$DF
-    STA byte_RAM_3
-    JSR sub_BANK1_BA4E
+    STA byte_RAM_3 ; counter
+    JSR sub_BANK1_BA4E ;; maybe above has to do with check first tile before anything else
     JMP ++
-EnterDefault_Reap:
+EnterDefault_Reap: ; loop stuff
     DEC byte_RAM_3
     BEQ +
     JSR MoveByYThenX
--  JSR sub_BANK1_BA4E ;; check tile
+-   JSR sub_BANK1_BA4E ;; check tile
 ++  LDY byte_RAM_E7
     LDA (byte_RAM_1),Y
     CMP #$40
@@ -53,8 +53,8 @@ EnterDefault_Reap:
 +   JSR MoveByYLo
     RTS 
 
-EnterDoor_Custom:
-    LDA #PlayerState_Normal
+EnterDoor_Custom: ; This is called first for every transition
+    LDA #PlayerState_Normal 
     STA PlayerState
     STA PlayerXLo
     STA byte_RAM_E5  
