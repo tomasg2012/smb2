@@ -3432,8 +3432,8 @@ loc_BANK6_9770: ;; skip 1 byte, then return to check if we're ending
 
 loc_BANK6_9774: ;; check if we're not F0 ( start check if we're a door )
 IFDEF BUGFIX_VERTDOOR:
-	  JMP 	  BugFixDoor
-ResumeDoor:
+	  JSR 	  BugFixDoor
+      JMP     loc_BANK6_976F
 ENDIF
       CLC
       ADC     byte_RAM_9
@@ -3455,9 +3455,6 @@ loc_BANK6_9784:
 
 loc_BANK6_9787:
       STA     byte_RAM_9
-IFDEF BUGFIX_VERTDOOR:
-SkipDoorReadMain:
-ENDIF
       JMP     loc_BANK6_976F ;; end replace
 
 ; ---------------------------------------------------------------------------

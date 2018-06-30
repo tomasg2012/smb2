@@ -17,7 +17,6 @@ BugFixDoor: ;???
         PHA
         TYA
         PHA
-        DEY
         LDA (byte_RAM_5),Y
         LDY #0
 FindOurDoor:
@@ -32,12 +31,21 @@ DefaultNoSkip:
         PLA
         TAX
         PLA
-		JMP ResumeDoor
+        CLC
+        ADC $9
+        BCC +
+        ADC #$0F
+        JMP ++
++       CMP #$F0
+        BNE +++
+        LDA #00
+++      INC $540
++++     STA $09
+        RTS
 SkipDoorRead:
         PLA
         TAY
         PLA
         TAX
         PLA
-		JMP SkipDoorReadMain
-
+        RTS
