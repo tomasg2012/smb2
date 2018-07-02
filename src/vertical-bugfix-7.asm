@@ -9,7 +9,6 @@ TableDoorTypes:
       .BYTE $1C
       .BYTE $1D
       .BYTE $1E
-      .BYTE $FF
 
 BugFixDoor: ;???
 		PHA
@@ -17,6 +16,17 @@ BugFixDoor: ;???
         PHA
         TYA
         PHA
+StartChkDoor:
+        DEY
+        CPY #3
+        BEQ DefaultNoSkip
+        DEY
+        DEY
+        LDA (byte_RAM_5),Y
+        CMP #$F5
+        BEQ DefaultNoSkip
+        INY
+        INY
         LDA (byte_RAM_5),Y
         LDY #0
 FindOurDoor:
@@ -31,16 +41,6 @@ DefaultNoSkip:
         PLA
         TAX
         PLA
-        CLC
-        ADC $9
-        BCC +
-        ADC #$0F
-        JMP ++
-+       CMP #$F0
-        BNE +++
-        LDA #00
-++      INC $540
-+++     STA $09
         RTS
 SkipDoorRead:
         PLA
@@ -48,4 +48,6 @@ SkipDoorRead:
         PLA
         TAX
         PLA
-        RTS
+        PLA
+        PLA
+        JMP     loc_BANK6_976F
