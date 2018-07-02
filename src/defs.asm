@@ -341,7 +341,6 @@ Enemy_HawkmouthLeft =  $43
 Enemy_CrystalBall =  $44
 Enemy_Starman =  $45
 Enemy_Stopwatch =  $46
-Enemy_Custom =  $47
 
 
 ; ---------------------------------------------------------------------------

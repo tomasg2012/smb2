@@ -26,6 +26,10 @@ StartChkDoor:
         CMP #$F5
         BEQ DefaultNoSkip
         INY
+        LDA (byte_RAM_5),Y
+        AND #$F0
+        CMP #$F0
+        BEQ DefaultNoSkip
         INY
         LDA (byte_RAM_5),Y
         LDY #0

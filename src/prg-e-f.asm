@@ -794,6 +794,7 @@ sub_BANKF_E17F:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+; RenderTitleCard/Pause?
 sub_BANKF_E198:
       INY
       TYA
@@ -803,7 +804,8 @@ sub_BANKF_E198:
       TXA
       ORA     #$D0
       STA     byte_RAM_717D
-      LDY     ExtraLives
+      JSR     CalcTime
+      LDY     ExtraLives ; Display ExtraLives
       DEY
       TYA
       JSR     sub_BANKF_EA8E
@@ -1306,13 +1308,8 @@ loc_BANKF_E491:
       LDA     NeedVerticalScroll
       AND     #4
       BNE     loc_BANKF_E4A3
-IFDEF PLAYER_STUFF
-      JSR     PollCharSwitch
-ENDIF
-IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
-ENDIF
       BEQ     loc_BANKF_E4A3
 
       JMP     loc_BANKF_E515
@@ -1376,13 +1373,8 @@ loc_BANKF_E4E5:
       LDA     NeedVerticalScroll
       AND     #4
       BNE     loc_BANKF_E4F4
-IFDEF PLAYER_STUFF
-      JSR     PollCharSwitch
-ENDIF
-IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
-ENDIF
       BNE     loc_BANKF_E515
 
 loc_BANKF_E4F4:
@@ -1436,13 +1428,8 @@ DoSuicideCheatCheck:
       JSR     KillPlayer			  ; KILL THYSELF
 
 loc_BANKF_E533:
-IFDEF PLAYER_STUFF
-      JSR     PollCharSwitch
-ENDIF
-IFNDEF PLAYER_STUFF
-      LDA     Player1JoypadPress
+      LDA     Player1JoypadPress ; pause menu here??
       AND     #ControllerInput_Start
-ENDIF
       BNE     loc_BANKF_E54B
 
       DEC     byte_RAM_6
@@ -1793,13 +1780,8 @@ loc_BANKF_E733:
       STA     ScreenUpdateIndex
 
 loc_BANKF_E747:
-IFDEF PLAYER_STUFF
-      JSR     PollCharSwitch
-ENDIF
-IFNDEF PLAYER_STUFF
       LDA     Player1JoypadPress
       AND     #ControllerInput_Start
-ENDIF
       BEQ     loc_BANKF_E719
 
       LDA     byte_RAM_8
@@ -2373,6 +2355,7 @@ sub_BANKF_EA68:
 
 ; =============== S U B	R O U T	I N E =======================================
 
+CalcOverflowNumbers:
 sub_BANKF_EA8E:
       LDY     #$D0
 
@@ -3048,10 +3031,63 @@ PollCharSwitch:
       LDA     #$01
       STA     byte_RAM_4C6
       JSR     loc_BANKF_FE33 ; update chr
+EndPollCharSuccess:
+      LDA     #PRGBank_0_1
+      JSR     ChangeMappedPRGBank
 EndPollChar:
-      LDA     Player1JoypadPress
-      AND     #ControllerInput_Start
       RTS
+TimerTic:
+      LDX     #0
+TimerTicPlus:
+      INC     $7DD0,X
+      LDA     $7DD0,X
+      CMP     #$3C
+      BNE     EndTimerTic
+      LDA     #0
+      STA     $7DD0,X
+      INX
+      JMP     TimerTicPlus
+EndTimerTic:
+      RTS
+CalcTime:
+      LDA     #$26
+      STA     $7193
+      LDA     #$88
+      STA     $7194
+      LDA     #$0C
+      STA     $7195
+      LDX     #3
+CalcTimeHour:
+      LDA     $7DD3
+      JSR     sub_BANKF_EA8E
+      STY     $7196
+      STA     $7197
+      LDA     #$E1
+      STA     $7198
+      LDA     $7DD2
+      JSR     sub_BANKF_EA8E
+      STY     $7199
+      STA     $719A
+      LDA     #$E6
+      STA     $719B
+      LDA     $7DD1
+      JSR     sub_BANKF_EA8E
+      STY     $719C
+      STA     $719D
+      LDA     #$EC
+      STA     $719E
+      LDA     #$F8
+      STA     $719F
+      LDA     $7DD0
+      JSR     sub_BANKF_EA8E
+      STY     $71A0
+      STA     $71A1
+      LDA     #0
+      STA     $71A2
+EndCalcTime:
+      RTS
+
+      
 ENDIF
 IFDEF DEBUG
       .include "src/debug-f.asm"
@@ -3354,6 +3390,10 @@ sub_BANKF_F0F9:
       JSR     ChangeMappedPRGBank
 
       JSR     HandlePlayerState
+IFDEF PLAYER_STUFF:
+      JSR     PollCharSwitch
+      JSR     TimerTic
+ENDIF
 
 loc_BANKF_F115:
       JSR     sub_BANKF_F228
@@ -3384,6 +3424,10 @@ sub_BANKF_F11E:
       BNE     loc_BANKF_F13A
 
       JSR     HandlePlayerState
+IFDEF PLAYER_STUFF:
+      JSR     PollCharSwitch
+      JSR     TimerTic
+ENDIF
 
 loc_BANKF_F13A:
       JSR     sub_BANKF_F2C2
@@ -3459,6 +3503,10 @@ sub_BANKF_F17E:
       JSR     ChangeMappedPRGBank
 
       JSR     HandlePlayerState
+IFDEF PLAYER_STUFF:
+      JSR     PollCharSwitch
+      JSR     TimerTic
+ENDIF
 
 loc_BANKF_F19D:
       LDA     #PRGBank_0_1
